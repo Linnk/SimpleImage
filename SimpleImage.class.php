@@ -56,6 +56,10 @@
 			else
 				throw new ImageNotFoundException();
 		}
+		public function __destruct()
+		{
+			imagedestroy($this->image);
+		}
 
 		public function save($filename, $image_type = IMAGETYPE_JPEG, $compression = 100, $permissions = null)
 		{
@@ -131,7 +135,7 @@
 			$this->resize($width,$height);
 		}
 
-		public function resize($width,$height)
+		public function resize($width, $height)
 		{
 			$new_image = imagecreatetruecolor($width, $height);
 			imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());

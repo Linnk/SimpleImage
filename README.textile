@@ -4,4 +4,4 @@ h2. A simple class for manipulate images on PHP5
 
 This is a little class for every day task with images, like resize and simple save –commonly, after upload it. You can handle an image by instance.
 
-There is still some things to do, like the destructor an another features, but actually is very stable. You can use it on production :)
+There is still some things to do, but actually is very stable. You can use it on production :)
