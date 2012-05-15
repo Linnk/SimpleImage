@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ImageNotFoundException Class.
  *
@@ -61,27 +60,33 @@
 			imagedestroy($this->image);
 		}
 
-		public function save($filename, $image_type = IMAGETYPE_JPEG, $compression = 100, $permissions = null)
+		public function save($filename, $image_type = null, $compression = 100, $permissions = null)
 		{
+			if(is_null($image_type))
+				$image_type = $this->image_type;
+
 			if($image_type == IMAGETYPE_JPEG)
 			{
-				imagejpeg($this->image,$filename,$compression);
+				imagejpeg($this->image, $filename, $compression);
 			}
 			elseif($image_type == IMAGETYPE_GIF)
 			{
-				imagegif($this->image,$filename);         
+				imagegif($this->image, $filename);         
 			}
 			elseif($image_type == IMAGETYPE_PNG)
 			{
-				imagepng($this->image,$filename);
+				imagepng($this->image, $filename);
 			}
-			
+
 			if($permissions != null)
-				chmod($filename,$permissions);
+				chmod($filename, $permissions);
 		}
 
 		public function output($image_type = IMAGETYPE_JPEG)
 		{
+			if(is_null($image_type))
+				$image_type = $this->image_type;
+
 			if($image_type == IMAGETYPE_JPEG)
 			{
 				imagejpeg($this->image);
@@ -105,24 +110,24 @@
 		{
 			return imagesy($this->image);
 		}
-		
+
 		public function getImageType()
 		{
 			return $this->image_type;
-		}
-
-		public function resizeToHeight($height)
-		{
-			$ratio = $height / $this->getHeight();
-			$width = $this->getWidth() * $ratio;
-
-			$this->resize($width,$height);
 		}
 
 		public function resizeToWidth($width)
 		{
 			$ratio = $width / $this->getWidth();
 			$height = $this->getheight() * $ratio;
+
+			$this->resize($width,$height);
+		}
+
+		public function resizeToHeight($height)
+		{
+			$ratio = $height / $this->getHeight();
+			$width = $this->getWidth() * $ratio;
 
 			$this->resize($width,$height);
 		}
@@ -138,6 +143,10 @@
 		public function resize($width, $height)
 		{
 			$new_image = imagecreatetruecolor($width, $height);
+
+			imagealphablending($new_image, true);
+			imagesavealpha($new_image, true);
+			imagefill($new_image, 0, 0, imagecolorallocatealpha($new_image, 244, 244, 244, 127));
 			imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
 
 			$this->image = $new_image;
