@@ -31,7 +31,6 @@
 				return null;
 			}
 		}
-
 		public function __construct($filename)
 		{
 			if(!file_exists($filename))
@@ -59,7 +58,6 @@
 		{
 			imagedestroy($this->image);
 		}
-
 		public function save($filename, $image_type = null, $compression = 100, $permissions = null)
 		{
 			if(is_null($image_type))
@@ -81,7 +79,6 @@
 			if($permissions != null)
 				chmod($filename, $permissions);
 		}
-
 		public function output($image_type = IMAGETYPE_JPEG)
 		{
 			if(is_null($image_type))
@@ -100,22 +97,18 @@
 				imagepng($this->image);
 			}   
 		}
-
 		public function getWidth()
 		{
 			return imagesx($this->image);
 		}
-
 		public function getHeight()
 		{
 			return imagesy($this->image);
 		}
-
 		public function getImageType()
 		{
 			return $this->image_type;
 		}
-
 		public function resizeToWidth($width)
 		{
 			$ratio = $width / $this->getWidth();
@@ -123,7 +116,6 @@
 
 			$this->resize($width,$height);
 		}
-
 		public function resizeToHeight($height)
 		{
 			$ratio = $height / $this->getHeight();
@@ -131,7 +123,6 @@
 
 			$this->resize($width,$height);
 		}
-
 		public function scale($scale)
 		{
 			$width = $this->getWidth() * $scale/100;
@@ -139,7 +130,6 @@
 
 			$this->resize($width,$height);
 		}
-
 		public function resize($width, $height)
 		{
 			$new_image = imagecreatetruecolor($width, $height);
@@ -150,6 +140,43 @@
 			imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
 
 			$this->image = $new_image;
+		}
+		public function flip($mode = 'both')
+		{
+			$src_width = $width = $this->getWidth();
+			$src_height = $height = $this->getHeight();
+
+		    $src_y = $src_x = 0;
+
+		    switch ($mode)
+		    {
+		        case 'vertical':
+		            $src_y = $height - 1;
+		            $src_height = $height * (-1);
+					break;
+
+		        case 'horizontal':
+		            $src_x = $width - 1;
+		            $src_width = $width * (-1);
+					break;
+
+		        case 'both':
+		            $src_x = $width - 1;
+		            $src_y = $height - 1;
+		            $src_width = $width * (-1);
+		            $src_height = $height * (-1);
+					break;
+
+		        default:
+		            return false;
+		    }
+
+		    $new_image = imagecreatetruecolor($width, $height);
+
+		    if($success = imagecopyresampled($new_image, $this->image, 0, 0, $src_x, $src_y , $width, $height, $src_width, $src_height))
+				$this->image = $new_image;
+
+			return $success;
 		}
 	}
 
