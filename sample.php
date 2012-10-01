@@ -9,7 +9,7 @@
 
 	require('SimpleImage.class.php');
 
-	$image = SimpleImage::load('./picture.jpg');
+	$image = SimpleImage::load('./picture.jpg'); // Picture from: http://browse.deviantart.com/?qh=&section=&q=cat#/djdwb2
 	
 	if($image)
 	{
