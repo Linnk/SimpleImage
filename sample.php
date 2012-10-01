@@ -9,22 +9,25 @@
 
 	require('SimpleImage.class.php');
 
-	$image = SimpleImage::load('./picture.png');
+	$image = SimpleImage::load('./picture.jpg');
 	
 	if($image)
 	{
-		$image->resizeToWidth(500);
+		$image->flip();
 		$image->save('picture2.jpg');
 
-		$image->scale(20);
+		$image->resizeToWidth(500);
 		$image->save('picture3.jpg');
+
+		$image->scale(20);
+		$image->save('picture4.jpg');
 		
 		// The next method just stream to the browser the actual state of the image.
-		$image->output();
+		// $image->output();
 	}
 	else
 	{
-		echo 'Image can\'t be loaded.'
+		echo 'Image can\'t be loaded.';
 	}
 
 ?>
