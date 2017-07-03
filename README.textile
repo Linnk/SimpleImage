@@ -2,6 +2,6 @@ h1. SimpleImage
 
 h2. A simple class for manipulate images on PHP5
 
-This is a little class for every day task with images, like resize and simple save –commonly, after upload it. You can handle an image by instance.
+This is a little class for every day task with images, like resize, cropping, saving and flipping the canvas. This way you can have an image per instance and the only dependency is the old GD extension.
 
-There is still some things to do, but actually is very stable. You can use it on production :)
+It is production ready.
